@@ -717,14 +717,16 @@
         KEYCOL,
         ncols = 2,
         ww = $('#main .centered-track').width(),
-        lpw = $('#left-panel').width(),
-        side = ~~((ww - lpw)/ncols),
+        lpw = $('#left-panel').width();
+
+    $('#widget').width(ww);
+    $('.stage').width(ww - lpw);
+
+    var side = ~~((ww - lpw)/ncols),
         //zide = function () { return ~~((ww - $('#left-panel').width())/ncols); },
         PLOTS = named_array(METRICS.keys.map(function (k) {
           return [k, make_plot(side, side, METRICS[k])];
         }));
-
-    $('#widget').width(ww);
 
     $('#picker ul').hover(function (e) {
         if (e.shiftKey) { return; } 
