@@ -488,8 +488,13 @@
           CIRC = d3.svg.symbol().type('circle')
                    .size(radius*radius*Math.PI)();
 
-          HBAR = 'M' + -halfwidth + ',0H' + halfwidth;
-          VBAR = 'M0' + -halfwidth + ',V' + halfwidth;
+          function rect (hw, hh) {
+            var o = (-hw + ',' + -hh);
+            return 'M' + o + 'H' + hw + 'V' + hh + 'H' + -hw + 'Z';
+          }
+
+          HBAR = rect(halfwidth, 0.5);
+          VBAR = rect(0.5, halfwidth);
        }());
 
        var xcoord,
@@ -569,12 +574,21 @@
                       function match_title (e) { return e.title === title; }
 
                       $circ.on('mouseover', function (d) {
-                        d3.selectAll('.points .scatterplot-marker').filter(match_title)
-                                                                   .classed('selected', true);
+                        d3.selectAll('.points .scatterplot-marker')
+                          .filter(match_title)
+                          .classed('selected', true)
+                          .each(function () {
+                                  var p = this.parentNode;
+                                  p.removeChild(this);
+                                  p.appendChild(this);
+                                });
+
                       });
+
                       $circ.on('mouseout', function (d) {
-                        d3.selectAll('.points .scatterplot-marker').filter(match_title)
-                                                                   .classed('selected', false);
+                        d3.selectAll('.points .scatterplot-marker')
+                          .filter(match_title)
+                          .classed('selected', false);
                       });
 
                     });
